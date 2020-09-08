@@ -1,0 +1,16 @@
+{
+  "name": "jgauthi/component_debug",
+  "description": "Debug tools like: varExport* functions, timer, server dump, SQL Beautifier, etc.",
+  "type": "library",
+  "homepage": "https://github.com/jgauthi/component_debug",
+  "require": {
+    "php": ">=4.0"
+  },
+  "autoload": {
+    "classmap": [ "src/" ]
+  },
+  "license": "GPL-3.0",
+  "authors": [
+    { "name": "jgauthi", "homepage": "https://github.com/jgauthi" }
+  ]
+}
