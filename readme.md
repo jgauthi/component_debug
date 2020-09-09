@@ -1,5 +1,7 @@
 # Component Debug
-Debug tools like: varExport* functions, timer, server dump, SQL Beautifier, etc.
+Debug tools like: varExport* functions, timer, server dump, debug handler, SQL Beautifier, etc.
+
+* [Class Timer](src/Timer.php) to evaluate time script and specific portion code.
 
 ## Prerequisite
 

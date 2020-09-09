@@ -4,10 +4,11 @@
   "type": "library",
   "homepage": "https://github.com/jgauthi/component_debug",
   "require": {
-    "php": ">=4.0"
+    "php": ">=5.4",
+    "ext-mbstring": "*"
   },
   "autoload": {
-    "classmap": [ "src/" ]
+    "psr-4": { "Jgauthi\\Component\\Debug\\": "src/" }
   },
   "license": "GPL-3.0",
   "authors": [
