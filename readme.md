@@ -5,6 +5,8 @@ Debug tools like: varExport* functions, timer, server dump, debug handler, SQL B
 
 `VarExport*` functions is a `var_export()` extended, with `<pre></pre>` and multiples arguments $var exported. You can use several streams for output debug var (html comment, debug file, values returned).
 
+`VarExport*_wp` functions is a wordpress version of precedents functions. These debug functions is display on site or admin footer. 
+
 
 ## Prerequisite
 
@@ -26,6 +28,15 @@ Edit your [composer.json](https://getcomposer.org) (launch `composer update` aft
 Define the constant for dump exported variable on the folder (require write permissions):
 ```php
 define('DEBUG_EXPORT_PATH', 'tmp/');
+```
+
+For use VarExport*_wp functions (wordpress), you can include the [VarExportWordpress.php](https://github.com/jgauthi/component_debug/tree/master/src/VarExportWordpress.php) file on `wp-config.php` or `theme init`:
+```php
+require_once __DIR__.'/vendor/autoload.php';
+
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    include_once __DIR__.'/vendor/jgauthi/component_debug/src/VarExportWordpress.php';
+}
 ```
 
 
