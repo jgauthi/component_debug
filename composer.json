@@ -8,6 +8,7 @@
     "ext-mbstring": "*"
   },
   "autoload": {
+    "files": [ "src/VarExport.php" ],
     "psr-4": { "Jgauthi\\Component\\Debug\\": "src/" }
   },
   "license": "GPL-3.0",
