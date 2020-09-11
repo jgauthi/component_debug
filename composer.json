@@ -11,6 +11,9 @@
     "files": [ "src/VarExport.php" ],
     "psr-4": { "Jgauthi\\Component\\Debug\\": "src/" }
   },
+  "suggest": {
+    "symfony/var-dumper": "(optional) Require for VarDumperServer feature"
+  },
   "license": "GPL-3.0",
   "authors": [
     { "name": "jgauthi", "homepage": "https://github.com/jgauthi" }

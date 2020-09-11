@@ -39,6 +39,7 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 }
 ```
 
+For use the VarDumperServer (optional): `composer require --dev symfony/var-dumper`, and launch the command on your terminal: `./vendor/bin/var-dump-server`.
 
 ## Documentation
 You can look at [folder example](https://github.com/jgauthi/component_debug/tree/master/example).
