@@ -5,7 +5,8 @@
   "homepage": "https://github.com/jgauthi/component_debug",
   "require": {
     "php": ">=5.4",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "jdorn/sql-formatter": "^1.2"
   },
   "autoload": {
     "files": [ "src/VarExport.php" ],
