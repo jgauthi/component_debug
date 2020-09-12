@@ -3,7 +3,7 @@
  * @name: Timer
  * @note: Stopwatch in milliseconds script time+ the various steps in the code
  * @author: Jgauthi <github.com/jgauthi>, created at [2mars2007]
- * @version: 1.1
+ * @version: 1.2
 
  *******************************************************************************/
 
@@ -11,178 +11,187 @@ namespace Jgauthi\Component\Debug;
 
 class Timer
 {
-    protected $debut;
-    protected $fin;
+    const EXPORT_FORMAT_HTML = 'html';
+    const EXPORT_FORMAT_COMMENT = 'commentaire';
+
+    /** @var float */
+    protected $startTime;
+    /** @var array */
     protected $time = [];
-    protected $time_chap = [];
-    public $start = false;
-    public $header = 0;
-    public $resultat;
-    protected $etape;
-    protected $chapitre;
-
-    //-- CONSTRUCTEUR ---------------------------------
-    public function __construct($header = 0)
-    {
-        $this->debut = microtime();
-        $this->header = $header;
-    }
-
-    //-- ETALONNER LE PARCOURS DU SCRIPT --------------
+    /** @var array */
+    protected $chapterTimes = [];
+    /** @var bool */
+    private $sendHeaderHttp;
+    /** @var string */
+    protected $result;
+    /** @var string */
+    protected $step;
+    /** @var string */
+    protected $chapter;
 
     /**
-     * @param $nom
+     * @param bool $header
+     */
+    public function __construct($header = false)
+    {
+        $this->startTime = microtime(true);
+        $this->sendHeaderHttp = $header;
+    }
+
+    /**
+     * @param bool $header
+     * @param string $format
      * @return self
      */
-    public function etape($nom)
+    static public function init($header = false, $format = self::EXPORT_FORMAT_HTML)
     {
-        $this->time[] = ['nom' => $nom, 'time' => microtime()];
+        $timer = new self($header);
+        $timer->shutdown($format);
+
+        return $timer;
+    }
+
+    //-- ÉTALONNER LE PARCOURS DU SCRIPT --------------
+
+    /**
+     * @param string $nom
+     * @return self
+     */
+    public function step($nom)
+    {
+        $this->time[] = ['nom' => $nom, 'time' => microtime(true)];
 
         return $this;
     }
 
     /**
-     * @param $nom
+     * @param string $nom
      * @return self
      */
-    public function chapitre_debut($nom)
+    public function chapterStart($nom)
     {
-        $this->time_chap[$nom] = ['debut' => microtime()];
+        $this->chapterTimes[$nom] = ['start' => microtime(true)];
 
         return $this;
     }
 
     /**
-     * @param $nom
+     * @param string $nom
+     * @return self
      */
-    public function chapitre_fin($nom)
+    public function chapterEnd($nom)
     {
-        $this->time_chap[$nom]['fin'] = microtime();
+        $this->chapterTimes[$nom]['end'] = microtime(true);
+
+        return $this;
     }
 
     //-- METTRE FIN AU COMPTEUR
 
+    /**
+     * @return self
+     */
     public function stop()
     {
-        $this->fin = microtime();
-
-        // Conversion
-        $this->debut = $this->_unit($this->debut);
-        $this->fin = $this->_unit($this->fin);
+        $endTime = microtime(true);
 
         // Vérifie si le header est correcte
-        if ($this->header && headers_sent()) {
-            $this->header = false;
+        if ($this->sendHeaderHttp && headers_sent()) {
+            $this->sendHeaderHttp = false;
         }
 
         // Analyse des données
-        $this->resultat = $this->_conv($this->fin - $this->debut);
+        $this->result = $this->_conv($endTime - $this->startTime);
 
         // Analyse des étapes
         if (count($this->time) > 0) {
-            $this->etape = '';
+            $this->step = '';
             foreach ($this->time as $id => $tmp) {
-                $calcul = $this->_vir($this->_conv($this->_unit($tmp['time']) - $this->debut));
-                $this->etape .= "- {$tmp['nom']}: $calcul ms\n";
+                $calcul = $this->number_format($this->_conv($tmp['time'] - $this->startTime));
+                $this->step .= "- {$tmp['nom']}: $calcul ms\n";
 
-                if ($this->header) {
+                if ($this->sendHeaderHttp) {
                     header("$id-Time: $calcul ms->{$tmp['nom']}");
                 }
             }
         }
 
         // Analyse des chapitres
-        if (count($this->time_chap) > 0) {
-            $this->chapitre = '';
-            foreach ($this->time_chap as $id => $temp) {
-                $calcul = $this->_vir($this->_conv($this->_unit($temp['fin']) - $this->_unit($temp['debut'])));
-                $this->chapitre .= "- {$id}: $calcul ms\n";
+        if (count($this->chapterTimes) > 0) {
+            $this->chapter = '';
+            foreach ($this->chapterTimes as $id => $temp) {
+                $calcul = $this->number_format($this->_conv($temp['end'] - $temp['start']));
+                $this->chapter .= "- {$id}: $calcul ms\n";
 
-                if ($this->header) {
-                    header("$id-Chap: $calcul ms");
+                if ($this->sendHeaderHttp) {
+                    header("{$id}-Chap: {$calcul} ms");
                 }
             }
         }
 
         // Renvoi des données
-        if ($this->header) {
-            header('X-Time: '.$this->_vir($this->resultat).' ms');
+        if ($this->sendHeaderHttp) {
+            header('X-Time: '.$this->number_format($this->result).' ms');
         }
+
+        return $this;
     }
 
     /**
-     * @param null $type
+     * @param string|null $type
      * @return string
      */
-    public function OutPut($type = null)
+    public function outPut($type = null)
     {
         $output = '';
 
         // Organiser les données
         if (count($this->time) > 0) {
-            $output .= "Etape:\n".$this->etape;
+            $output .= "Step:\n".$this->step;
         }
-        if (count($this->time_chap) > 0) {
-            $output .= "Chapitre:\n".$this->chapitre;
+        if (count($this->chapterTimes) > 0) {
+            $output .= "Chapter:\n".$this->chapter;
         }
-        $output .= "\n=>Time: ".$this->_vir($this->resultat).' ms';
+        $output .= "\n=>Time: ".$this->number_format($this->result).' ms';
 
         // Formater les données
-        if ('html' === $type) {
-            $outpub = "<h2>Temps du script:</h2>\n".
+        if ($type === self::EXPORT_FORMAT_HTML) {
+            $output = "<h2>Script time:</h2>\n".
                 str_replace(["\r\n", "\r", "\n"], '<br />', $output);
-        } elseif ('commentaire' === $type) {
-            $outpub = "<!- TEMPS ECOULE DU SCRIPT: \n$output\n-->";
+        } elseif ($type === self::EXPORT_FORMAT_COMMENT) {
+            $output = "<!- TIME OF SCRIPT: \n$output\n-->";
         }
 
-        return $outpub;
-    }
-
-    /**
-     * @return string
-     */
-    public function temps()
-    {
-        return $this->_vir($this->resultat);
+        return $output;
     }
 
     /**
      * @param string $format
      */
-    public function end($format = 'html')
+    public function end($format = self::EXPORT_FORMAT_HTML)
     {
         $this->stop();
-        echo $this->OutPut($format);
+        echo $this->outPut($format);
     }
 
     /**
      * @param string $format
      */
-    public function shutdown($format = 'html')
+    public function shutdown($format = self::EXPORT_FORMAT_HTML)
     {
-        register_shutdown_function([$this, 'end'], 'html');
+        register_shutdown_function([$this, 'end'], $format);
     }
 
     //-- CONVERTISSEUR ---------------------------------
 
     /**
-     * @param $time
-     * @return mixed
-     */
-    protected function _unit($time)
-    {
-        list($usec, $sec) = explode(' ', $time);
-
-        return $usec + $sec;
-    }
-
-    /**
-     * @param $time
+     * @param float $time
      * @return string
      */
     protected function _conv($time)
     {
-        return mb_substr($time * 1000, 0, 6);
+        return $time * 1000;
+//        return mb_substr($time * 1000, 0, 6);
 
         // Récupère les 6 premiers chiffres
         // Convertie en millisecondes
@@ -190,10 +199,10 @@ class Timer
     }
 
     /**
-     * @param $chiffre
+     * @param float $chiffre
      * @return string
      */
-    protected function _vir($chiffre)
+    protected function number_format($chiffre)
     {
         return number_format($chiffre, 2, ',', ' ');
     }
@@ -201,40 +210,43 @@ class Timer
     //-- Outil de test/debug -------------------------------
 
     /**
-     * @param string $phpcode
+     * @param callable $function
      * @param int $nb_loop
      * @param int $nb
+     * @param array $args
+     * @return self
      */
-    public function testloop($phpcode, $nb_loop = 10, $nb = 100)
+    public function testLoop($function, $nb_loop = 10, $nb = 100, $args = [])
     {
-        $chapitre = preg_replace('#[^a-z0-9-_]#i', '', mb_substr($phpcode, 0, 50));
+        $chapitre = preg_replace('#[^a-z0-9-_]#i', '', mb_substr($function, 0, 50));
 
         for ($loop = 0; $loop < $nb_loop; ++$loop) {
-            $this->chapitre_debut($chapitre.'#'.$loop);
+            $this->chapterStart($chapitre.'#'.$loop);
             for ($i = 0; $i < $nb; ++$i) {
-                eval($phpcode);
+                call_user_func_array($function, $args);
             }
 
-            $this->chapitre_fin($chapitre.'#'.$loop);
+            $this->chapterEnd($chapitre.'#'.$loop);
         }
+
+        return $this;
     }
 
     /**
      * Exporte un chapitre au format CSV.
-     *
      * @param string $filename
-     * @return bool
+     * @param string $delimiter
      */
-    public function export_chapitre($filename)
+    public function exportChapter($filename, $delimiter = ';')
     {
         // Analyse des chapitres
-        if (empty($this->time_chap)) {
-            return false;
+        if (empty($this->chapterTimes)) {
+            return;
         }
 
-        foreach ($this->time_chap as $id => $temp) {
-            $calcul = $this->_vir($this->_conv($this->_unit($temp['fin']) - $this->_unit($temp['debut'])));
-            error_log("{$id};{$calcul};ms\n", 3, $filename);
+        foreach ($this->chapterTimes as $id => $temp) {
+            $calcul = $this->number_format($this->_conv($temp['end'] - $temp['start']));
+            error_log("{$id}{$delimiter}{$calcul};ms\n", 3, $filename);
         }
     }
 }
