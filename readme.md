@@ -1,11 +1,10 @@
 # Component Debug
 Debug tools like: varExport* functions, timer, server dump, debug handler, SQL Beautifier, etc.
 
+* [VarExport*](src/VarExport.php) functions is a `var_export()` extended, with `<pre></pre>` and multiples arguments $var exported. You can use several streams for output debug var (html comment, debug file, values returned).
+* [VarExport*_wp](src/VarExportWordpress.php) functions is a wordpress version of precedents functions. These debug functions is display on site or admin footer. 
 * [Class Timer](src/Timer.php) to evaluate time script and specific portion code.
-
-`VarExport*` functions is a `var_export()` extended, with `<pre></pre>` and multiples arguments $var exported. You can use several streams for output debug var (html comment, debug file, values returned).
-
-`VarExport*_wp` functions is a wordpress version of precedents functions. These debug functions is display on site or admin footer. 
+* [Debug Handler](src/DebugHandler.php) is a script who display in the footer some debug information on the current page (dump values _GET, _POST..., files used, time script and memory, phpinfo, etc).
 
 
 ## Prerequisite
@@ -30,7 +29,7 @@ Define the constant for dump exported variable on the folder (require write perm
 define('DEBUG_EXPORT_PATH', 'tmp/');
 ```
 
-For use VarExport*_wp functions (wordpress), you can include the [VarExportWordpress.php](https://github.com/jgauthi/component_debug/tree/master/src/VarExportWordpress.php) file on `wp-config.php` or `theme init`:
+For use VarExport*_wp functions (wordpress), you can include the [VarExportWordpress.php](src/VarExportWordpress.php) file on `wp-config.php` or `theme init`:
 ```php
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -42,5 +41,5 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 For use the VarDumperServer (optional): `composer require --dev symfony/var-dumper`, and launch the command on your terminal: `./vendor/bin/var-dump-server`.
 
 ## Documentation
-You can look at [folder example](https://github.com/jgauthi/component_debug/tree/master/example).
+You can look at [folder example](example).
 

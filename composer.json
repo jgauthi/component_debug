@@ -1,10 +1,10 @@
 {
   "name": "jgauthi/component_debug",
-  "description": "Debug tools like: varExport* functions, timer, server dump, SQL Beautifier, etc.",
+  "description": "Debug tools like: varExport* functions, timer, server dump, debug handler, SQL Beautifier, etc.",
   "type": "library",
   "homepage": "https://github.com/jgauthi/component_debug",
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.6",
     "ext-mbstring": "*",
     "jdorn/sql-formatter": "^1.2"
   },
