@@ -19,7 +19,7 @@ Edit your [composer.json](https://getcomposer.org) (launch `composer update` aft
     { "type": "git", "url": "git@github.com:jgauthi/component_debug.git" }
   ],
   "require-dev": {
-    "jgauthi/component_debug": "1.*"
+    "jgauthi/component_debug": "2.*"
   }
 }
 ```

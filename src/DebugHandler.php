@@ -18,7 +18,7 @@ class DebugHandler
     // 		* valeur: interface (ajoute les interfaces init dans l'apply, peut se cumuler)
     //
     // Pour cumuler plusieurs valeurs: debug=defined|function
-    static public function init()
+    static public function init(): void
     {
         // Désactiver volontairement le debug
         if (isset($_GET['nodebug'])) {
@@ -49,7 +49,7 @@ class DebugHandler
     /**
      * @param string|bool $debugMode
      */
-    static private function activeDebug($debugMode)
+    static private function activeDebug($debugMode): void
     {
         if ($debugMode == 'false') {
             return;
@@ -65,7 +65,7 @@ class DebugHandler
      * @param string|bool $debugMode
      * @throws \ReflectionException
      */
-    static public function rapportFooter($debugMode = true)
+    static public function rapportFooter($debugMode = true): void
     {
         // Mettre fin au timer
         $duration = ceil((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000);
@@ -105,7 +105,7 @@ class DebugHandler
      * @param string|bool $debugMode
      * @throws \ReflectionException
      */
-    static protected function dumpValues($debugMode)
+    static protected function dumpValues($debugMode): void
     {
         $dumpFunction = 'var_dump';
         if (function_exists('dump')) {
@@ -248,10 +248,7 @@ class DebugHandler
         unset($export);
     }
 
-    /**
-     * @return string
-     */
-    static private function getCurrentMemory()
+    static private function getCurrentMemory(): string
     {
         $memory = memory_get_usage();
         $unit = ['o', 'ko', 'mo', 'go', 'to', 'po'];
@@ -261,10 +258,7 @@ class DebugHandler
         return $memory;
     }
 
-    /**
-     * @return bool
-     */
-    static public function isWordpressProject()
+    static public function isWordpressProject(): bool
     {
         static $isWordpress = null;
 

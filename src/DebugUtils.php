@@ -8,11 +8,8 @@ class DebugUtils
     /**
      * Allows you to return a well-formatted and clean SQL html from a query
      * @todo Improve by adding an argument $htmlFormat = true|false
-     * @param string $query
-     * @param array $arguments
-     * @return string
      */
-    public static function SqlClean($query, $arguments)
+    static public function SqlClean(string $query, ?array $arguments): string
     {
         if (!empty($arguments)) {
             $query = str_replace(

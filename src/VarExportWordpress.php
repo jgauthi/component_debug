@@ -21,13 +21,14 @@ use InvalidArgumentException;
 // 	});
 // }
 
-function varExport_wp()
+/**
+ * @param mixed ...$args
+ */
+function varExport_wp(... $args): void
 {
     if (!function_exists('is_admin') || !function_exists('add_action')) {
         return;
     }
-
-    $args = func_get_args();
 
     add_action(((is_admin()) ? 'admin_footer' : 'wp_footer'), function () use (&$args) {
         $color = '#'.sprintf('%06d', rand(0, 999999)); ?>
@@ -39,11 +40,7 @@ function varExport_wp()
     });
 }
 
-/**
- * @param callable $func
- * @param array $args
- */
-function varExportFunc_wp($func, $args = [])
+function varExportFunc_wp(callable $func, array $args = []): void
 {
     if (!function_exists('is_admin') || !function_exists('add_action')) {
         return;
@@ -59,10 +56,7 @@ function varExportFunc_wp($func, $args = [])
     });
 }
 
-/**
- * @param string|null $regexp
- */
-function varExportFilter_wp($regexp = null)
+function varExportFilter_wp(?string $regexp = null): void
 {
     if (!function_exists('is_admin') || !function_exists('add_action')) {
         return;
@@ -114,10 +108,8 @@ function varExportFilter_wp($regexp = null)
 
 /**
  * http://www.rarst.net/wordpress/debug-wordpress-hooks/
- * @param string $tag
- * @param array $hooks
  */
-function dump_hook($tag, $hooks)
+function dump_hook(string $tag, array $hooks): void
 {
     ksort($hooks);
 
@@ -151,9 +143,8 @@ function dump_hook($tag, $hooks)
 
 /**
  * usage: list_hooks('wp_footer');
- * @param bool $filter
  */
-function list_hooks($filter = false)
+function list_hooks(bool $filter = false): void
 {
     global $wp_filter;
 
@@ -183,10 +174,7 @@ function list_hook_details($input = null)
     return $input;
 }
 
-/**
- * @param bool $hook
- */
-function list_live_hooks($hook = false)
+function list_live_hooks(bool $hook = false): void
 {
     if (false === $hook) {
         $hook = 'all';
@@ -195,10 +183,12 @@ function list_live_hooks($hook = false)
     add_action($hook, 'list_hook_details', -1);
 }
 
-// Comparer les postmeta de 2 posts ou plus
-function varExport_wp_cmp_postmeta()
+/**
+ * Comparer les postmeta de 2 posts ou plus
+ * @param int ...$posts_ids
+ */
+function varExport_wp_cmp_postmeta(... $posts_ids): void
 {
-    $posts_ids = func_get_args();
     if (empty($posts_ids)) {
         varExport_wp('Posts ID empties');
         return;
@@ -228,14 +218,10 @@ function varExport_wp_cmp_postmeta()
 if (!function_exists('array_cmp')) {
     /**
      * Combine multiple arrays to one.
-     *
-     * @param array $args
-     * @return null|array
+     * @param array ...$args
      */
-    function array_cmp()
+    function array_cmp(... $args): ?array
     {
-        $args = func_get_args();
-
         if (empty($args)) {
             return null;
         } elseif (1 === count($args) && !empty($args[0])) {
@@ -271,7 +257,7 @@ if (!function_exists('array_to_html_table_title_cmp')) {
      *
      * @return string HTML Table
      */
-    function array_to_html_table_title_cmp($data, $title_table = null, $encode = 'UTF-8')
+    function array_to_html_table_title_cmp(array $data, ?string $title_table = null, string $encode = 'UTF-8'): string
     {
         if (empty($data)) {
             throw new InvalidArgumentException('Argument data is empty or is not an array.');

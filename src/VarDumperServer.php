@@ -13,10 +13,8 @@ namespace Jgauthi\Component\Debug;
 
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
-use Symfony\Component\VarDumper\Dumper\ContextProvider\CliContextProvider;
-use Symfony\Component\VarDumper\Dumper\ContextProvider\SourceContextProvider;
-use Symfony\Component\VarDumper\Dumper\HtmlDumper;
-use Symfony\Component\VarDumper\Dumper\ServerDumper;
+use Symfony\Component\VarDumper\Dumper\ContextProvider\{CliContextProvider, SourceContextProvider};
+use Symfony\Component\VarDumper\Dumper\{HtmlDumper, ServerDumper};
 use Symfony\Component\VarDumper\VarDumper;
 
 class VarDumperServer
@@ -24,7 +22,7 @@ class VarDumperServer
     /**
      * @param string  $host The server host
      */
-    public static function init($host = 'tcp://127.0.0.1:9912')
+    static public function init(string $host = 'tcp://127.0.0.1:9912'): void
     {
         if (!class_exists('Symfony\Component\VarDumper\Cloner\VarCloner')) {
             die('var-dumper not installed.');
