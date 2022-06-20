@@ -77,7 +77,7 @@ class Timer
             $this->step = '';
             foreach ($this->time as $id => $tmp) {
                 $calcul = $this->number_format($this->_conv($tmp['time'] - $this->startTime));
-                $this->step .= "- {$tmp['nom']}: $calcul ms\n";
+                $this->step .= "- {$tmp['nom']}: $calcul ms".PHP_EOL;
 
                 if ($this->sendHeaderHttp) {
                     header("$id-Time: $calcul ms->{$tmp['nom']}");
@@ -90,7 +90,7 @@ class Timer
             $this->chapter = '';
             foreach ($this->chapterTimes as $id => $temp) {
                 $calcul = $this->number_format($this->_conv($temp['end'] - $temp['start']));
-                $this->chapter .= "- {$id}: $calcul ms\n";
+                $this->chapter .= "- {$id}: $calcul ms".PHP_EOL;
 
                 if ($this->sendHeaderHttp) {
                     header("{$id}-Chap: {$calcul} ms");
@@ -112,19 +112,19 @@ class Timer
 
         // Organiser les données
         if (count($this->time) > 0) {
-            $output .= "Step:\n".$this->step;
+            $output .= 'Step:'.PHP_EOL.$this->step;
         }
         if (count($this->chapterTimes) > 0) {
-            $output .= "Chapter:\n".$this->chapter;
+            $output .= 'Chapter:'.PHP_EOL.$this->chapter;
         }
-        $output .= "\n=>Time: ".$this->number_format($this->result).' ms';
+        $output .= PHP_EOL.'=>Time: '.$this->number_format($this->result).' ms';
 
         // Formater les données
         if ($type === self::EXPORT_FORMAT_HTML) {
-            $output = "<h2>Script time:</h2>\n".
-                str_replace(["\r\n", "\r", "\n"], '<br />', $output);
+            $output = '<h2>Script time:</h2>'.PHP_EOL.
+                str_replace(["\r\n", "\r", "\n"], '<br>', $output);
         } elseif ($type === self::EXPORT_FORMAT_COMMENT) {
-            $output = "<!- TIME OF SCRIPT: \n$output\n-->";
+            $output = '<!- TIME OF SCRIPT: '.PHP_EOL.$output.PHP_EOL.'-->';
         }
 
         return $output;
@@ -188,7 +188,7 @@ class Timer
 
         foreach ($this->chapterTimes as $id => $temp) {
             $calcul = $this->number_format($this->_conv($temp['end'] - $temp['start']));
-            error_log("{$id}{$delimiter}{$calcul};ms\n", 3, $filename);
+            error_log("{$id}{$delimiter}{$calcul};ms".PHP_EOL, 3, $filename);
         }
     }
 }

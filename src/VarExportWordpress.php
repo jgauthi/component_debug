@@ -210,7 +210,7 @@ function varExport_wp_cmp_postmeta(... $posts_ids): void
     add_action(((is_admin()) ? 'admin_footer' : 'wp_footer'), function () use (&$html) {
         $style = 'padding: 0 10px; border: 1px dashed #'.sprintf('%06d', rand(0, 999999)).';';
         $style .= ((is_admin()) ? 'margin-left: 170px; margin-right: 10px; ' : 'margin: 10px;'); ?>
-        <div style="<?=$style; ?>"><?=$html; ?></div><br clear="all"><?php
+        <div style="<?=$style; ?>"><?=$html?></div><br clear="all"><?php
     });
 }
 

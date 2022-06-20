@@ -62,12 +62,12 @@ function varExportData(... $args): array
  */
 function varComment(... $args): void
 {
-    echo "<!-- DEBUG:\n";
+    echo '<!-- DEBUG:'.PHP_EOL;
     foreach ($args as $var) {
         $var = varExportReturnValue($var);
-        echo "=> $var\n";
+        echo '=> '.$var.PHP_EOL;
     }
-    echo "\n-->\n\n";
+    echo PHP_EOL.'-->'.PHP_EOL;
 }
 
 /**
@@ -84,9 +84,9 @@ function VarExportFile(... $args): void
     $content = '';
     foreach ($args as $var) {
         $var = varExportReturnValue($var);
-        $content .= "$var\n--\n";
+        $content .= $var.PHP_EOL.'--'.PHP_EOL;
     }
-    $content .= "\n------------------------------------\n\n";
+    $content .= PHP_EOL."------------------------------------".PHP_EOL.PHP_EOL;
 
     // Gestion du fichier
     $file = DEBUG_EXPORT_PATH.'/'.
