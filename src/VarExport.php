@@ -81,7 +81,16 @@ function VarExportFile(... $args): void
         die('The folder DEBUG_EXPORT_PATH is not writable or not exists');
     }
 
-    $content = '';
+    $trace = (new Exception)->getTrace();
+    $originError = 'unknown';
+    if (!empty($trace[1])) {
+        $originError = $trace[1]['file'].':'.$trace[1]['line']; /* @phpstan-ignore-line */
+        if (!empty($trace[1]['function'])) {
+            $originError .= ', function: '.$trace[1]['function'];
+        }
+    }
+
+    $content = 'Origin: '.$originError.PHP_EOL;
     foreach ($args as $var) {
         $var = varExportReturnValue($var);
         $content .= $var.PHP_EOL.'--'.PHP_EOL;
