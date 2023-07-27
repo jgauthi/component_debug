@@ -20,6 +20,14 @@ $time->chapterEnd('Sleep 2s');
 // In this example: 10 Loops, 100 executions by loop (total: 1000 executions)
 $time->testLoop('filemtime', 10, 100, [__FILE__]);
 
+// [Alternative] method stand-alone
+$file = __FILE__;
+var_dump(
+    'filemtime average time: '.
+    Timer::loopFunction(function() use ($file): void { filemtime($file); } )
+);
+
+
 // Define a location in the code to get the current time spent
 $time->step('After testLoop');
 sleep(1);

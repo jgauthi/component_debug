@@ -2,8 +2,8 @@
 /*******************************************************************************
  * @name: Timer
  * @note: Stopwatch in milliseconds script time+ the various steps in the code
- * @author: Jgauthi <github.com/jgauthi>, created at [2mars2007]
- * @version: 2.0
+ * @author: Jgauthi, created at [28mars2007], url: <https://github.com/jgauthi/component_debug>
+ * @version: 2.0.2
 
  *******************************************************************************/
 
@@ -174,6 +174,22 @@ class Timer
         }
 
         return $this;
+    }
+
+    /**
+     * Method stand-alone
+     * Usage: \Jgauthi\Component\Timer::loopFunction(function() use ($var): void { somecode($var); } );
+     */
+    public static function loopFunction(callable $closure, int $nbLoop = 100): float
+    {
+        $data = [];
+        for($i = 0; $i < $nbLoop; $i++) {
+            $time = microtime(true);
+            $closure();
+            $data[] = microtime(true) - $time;
+        }
+
+        return array_sum($data) / $nbLoop;
     }
 
     /**
