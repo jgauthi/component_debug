@@ -8,8 +8,7 @@ Debug tools like: varExport* functions, timer, server dump, debug handler, SQL B
 
 
 ## Prerequisite
-
-* PHP 4 (v1.0), PHP 5.4+ (v1.1), PHP 5.6 (v1.2+) or PHP 7.4 (v2)
+* PHP 8.2 (v2.1), old version: 7.4 (v2), 5.6 (v1.2+), 5.4+ (v1.1), 4 (v1.0)
 
 ## Install
 Edit your [composer.json](https://getcomposer.org) (launch `composer update` after edit):
@@ -26,7 +25,10 @@ Edit your [composer.json](https://getcomposer.org) (launch `composer update` aft
 
 Define the constant for dump exported variable on the folder (require write permissions):
 ```php
-define('DEBUG_EXPORT_PATH', 'tmp/');
+define('DEBUG_EXPORT_PATH', sys_get_temp_dir());
+
+// Or, set manually
+define('DEBUG_EXPORT_PATH', __DIR__.'/tmp');
 ```
 
 For use VarExport*_wp functions (wordpress), you can include the [VarExportWordpress.php](src/VarExportWordpress.php) file on `wp-config.php` or `theme init`:

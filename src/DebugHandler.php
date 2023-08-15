@@ -62,10 +62,9 @@ class DebugHandler
     }
 
     /**
-     * @param string|bool $debugMode
      * @throws \ReflectionException
      */
-    static public function rapportFooter($debugMode = true): void
+    static public function rapportFooter(string|bool $debugMode = true): void
     {
         // Mettre fin au timer
         $duration = ceil((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000);
@@ -102,10 +101,9 @@ class DebugHandler
 
     /**
      * Variables à exporter
-     * @param string|bool $debugMode
      * @throws \ReflectionException
      */
-    static protected function dumpValues($debugMode): void
+    static protected function dumpValues(string|bool $debugMode): void
     {
         $dumpFunction = 'var_dump';
         if (function_exists('dump')) {

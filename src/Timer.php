@@ -3,7 +3,7 @@
  * @name: Timer
  * @note: Stopwatch in milliseconds script time+ the various steps in the code
  * @author: Jgauthi, created at [28mars2007], url: <https://github.com/jgauthi/component_debug>
- * @version: 2.0.2
+ * @version: 2.1
 
  *******************************************************************************/
 
@@ -17,15 +17,13 @@ class Timer
     protected float $startTime;
     protected array $time = [];
     protected array $chapterTimes = [];
-    private bool $sendHeaderHttp;
     protected string $result;
     protected string $step;
     protected string $chapter;
 
-    public function __construct(bool $header = false)
+    public function __construct(private bool $sendHeaderHttp = false)
     {
         $this->startTime = microtime(true);
-        $this->sendHeaderHttp = $header;
     }
 
     static public function init(bool $header = false, string $format = self::EXPORT_FORMAT_HTML): self

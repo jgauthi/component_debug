@@ -4,7 +4,7 @@
   "type": "library",
   "homepage": "https://github.com/jgauthi/component_debug",
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.2",
     "ext-mbstring": "*",
     "jdorn/sql-formatter": "^1.2"
   },

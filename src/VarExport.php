@@ -7,10 +7,7 @@
 //-------------------------------------------------
 // Debug
 //-------------------------------------------------
-/**
- * @param mixed $var
- */
-function varExportReturnValue($var): string
+function varExportReturnValue(mixed $var): string
 {
     if (null === $var) {
         $var = '# NULL #';
@@ -33,9 +30,8 @@ function varExportReturnValue($var): string
 
 /**
  * Utiliser dump si possible
- * @param mixed ...$args
  */
-function varExport(... $args)
+function varExport(mixed ...$args)
 {
     foreach($args as $var) {
         $var = varExportReturnValue($var);
@@ -44,10 +40,7 @@ function varExport(... $args)
     echo '<hr style="color: red;"/>';
 }
 
-/**
- * @param mixed ...$args
- */
-function varExportData(... $args): array
+function varExportData(mixed ...$args): array
 {
     $data = [];
     foreach ($args as $var) {
@@ -57,10 +50,7 @@ function varExportData(... $args): array
     return $data;
 }
 
-/**
- * @param mixed ...$args
- */
-function varComment(... $args): void
+function varComment(mixed ...$args): void
 {
     echo '<!-- DEBUG:'.PHP_EOL;
     foreach ($args as $var) {
@@ -70,10 +60,7 @@ function varComment(... $args): void
     echo PHP_EOL.'-->'.PHP_EOL;
 }
 
-/**
- * @param mixed ...$args
- */
-function VarExportFile(... $args): void
+function VarExportFile(mixed ...$args): void
 {
     if (!defined('DEBUG_EXPORT_PATH')) {
         die('DEBUG_EXPORT_PATH is not defined');

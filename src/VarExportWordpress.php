@@ -21,10 +21,7 @@ use InvalidArgumentException;
 // 	});
 // }
 
-/**
- * @param mixed ...$args
- */
-function varExport_wp(... $args): void
+function varExport_wp(mixed ...$args): void
 {
     if (!function_exists('is_admin') || !function_exists('add_action')) {
         return;
@@ -99,7 +96,7 @@ function varExportFilter_wp(?string $regexp = null): void
                 return ($a['order'] < $b['order']) ? -1 : 1;
             });
         } ?>
-        <div style="<?=$style; ?>">
+        <div style="<?=$style?>">
             <?php varExport("Filters '$regexp'", $data); ?>
         </div><br clear="all">
         <?php
@@ -158,11 +155,7 @@ function list_hooks(bool $filter = false): void
     }
 }
 
-/**
- * @param mixed|null $input
- * @return mixed|null
- */
-function list_hook_details($input = null)
+function list_hook_details(mixed $input = null): mixed
 {
     global $wp_filter;
 
@@ -185,9 +178,8 @@ function list_live_hooks(bool $hook = false): void
 
 /**
  * Comparer les postmeta de 2 posts ou plus
- * @param int ...$posts_ids
  */
-function varExport_wp_cmp_postmeta(... $posts_ids): void
+function varExport_wp_cmp_postmeta(int ...$posts_ids): void
 {
     if (empty($posts_ids)) {
         varExport_wp('Posts ID empties');
@@ -220,7 +212,7 @@ if (!function_exists('array_cmp')) {
      * Combine multiple arrays to one.
      * @param array ...$args
      */
-    function array_cmp(... $args): ?array
+    function array_cmp(mixed ...$args): ?array
     {
         if (empty($args)) {
             return null;

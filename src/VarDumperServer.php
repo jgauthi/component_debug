@@ -19,10 +19,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class VarDumperServer
 {
-    /**
-     * @param string  $host The server host
-     */
-    static public function init(string $host = 'tcp://127.0.0.1:9912'): void
+    static public function init(string $serverHost = 'tcp://127.0.0.1:9912'): void
     {
         if (!class_exists('Symfony\Component\VarDumper\Cloner\VarCloner')) {
             die('var-dumper not installed.');
@@ -30,7 +27,7 @@ class VarDumperServer
 
         $cloner = new VarCloner;
         $fallbackDumper = in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) ? new CliDumper : new HtmlDumper;
-        $dumper = new ServerDumper($host, $fallbackDumper, [
+        $dumper = new ServerDumper($serverHost, $fallbackDumper, [
             'cli' => new CliContextProvider,
             'source' => new SourceContextProvider,
         ]);
